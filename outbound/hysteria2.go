@@ -13,6 +13,7 @@ import (
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/log"
 	"github.com/sagernet/sing-box/option"
+	"github.com/sagernet/sing-box/outbound/houtbound"
 	"github.com/sagernet/sing-quic/hysteria"
 	"github.com/sagernet/sing-quic/hysteria2"
 	"github.com/sagernet/sing/common"
@@ -20,7 +21,6 @@ import (
 	E "github.com/sagernet/sing/common/exceptions"
 	M "github.com/sagernet/sing/common/metadata"
 	N "github.com/sagernet/sing/common/network"
-	"github.com/sagernet/sing-box/outbound/houtbound"
 )
 
 var (
@@ -30,8 +30,8 @@ var (
 
 type Hysteria2 struct {
 	myOutboundAdapter
-	client *hysteria2.Client
-	hforwarder   *houtbound.Forwarder
+	client     *hysteria2.Client
+	hforwarder *houtbound.Forwarder
 }
 
 func NewHysteria2(ctx context.Context, router adapter.Router, logger log.ContextLogger, tag string, options option.Hysteria2OutboundOptions) (*Hysteria2, error) {
@@ -39,8 +39,8 @@ func NewHysteria2(ctx context.Context, router adapter.Router, logger log.Context
 	if options.TLS == nil || !options.TLS.Enabled {
 		return nil, C.ErrTLSRequired
 	}
-	hforwarder := houtbound.ApplyTurnRelay(houtbound.CommonTurnRelayOptions{ServerOptions: options.ServerOptions,TurnRelayOptions: options.TurnRelay})
-	
+	hforwarder := houtbound.ApplyTurnRelay(houtbound.CommonTurnRelayOptions{ServerOptions: options.ServerOptions, TurnRelayOptions: options.TurnRelay})
+
 	tlsConfig, err := tls.NewClient(ctx, options.Server, common.PtrValueOrDefault(options.TLS))
 	if err != nil {
 		return nil, err
@@ -62,6 +62,9 @@ func NewHysteria2(ctx context.Context, router adapter.Router, logger log.Context
 		return nil, err
 	}
 	networkList := options.Network.Build()
+	if options.HopInterval < 5 {
+		options.HopInterval = 5
+	}
 	client, err := hysteria2.NewClient(hysteria2.ClientOptions{
 		Context:            ctx,
 		Dialer:             outboundDialer,
@@ -74,6 +77,8 @@ func NewHysteria2(ctx context.Context, router adapter.Router, logger log.Context
 		Password:           options.Password,
 		TLSConfig:          tlsConfig,
 		UDPDisabled:        !common.Contains(networkList, N.NetworkUDP),
+		HopPorts:           options.HopPorts,
+		HopInterval:        options.HopInterval,
 	})
 	if err != nil {
 		return nil, err
@@ -87,8 +92,8 @@ func NewHysteria2(ctx context.Context, router adapter.Router, logger log.Context
 			tag:          tag,
 			dependencies: withDialerDependency(options.DialerOptions),
 		},
-		client: client,
-		hforwarder:  hforwarder,
+		client:     client,
+		hforwarder: hforwarder,
 	}, nil
 }
 
