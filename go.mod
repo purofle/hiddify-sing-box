@@ -28,7 +28,7 @@ require (
 	github.com/sagernet/cloudflare-tls v0.0.0-20231208171750-a4483c1b7cd1
 	github.com/sagernet/gomobile v0.1.3
 	github.com/sagernet/gvisor v0.0.0-20231209105102-8d27a30e436e
-	github.com/sagernet/quic-go v0.40.1
+	github.com/sagernet/quic-go v0.42.0-beta.2
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691
 	github.com/sagernet/sing v0.3.6
 	github.com/sagernet/sing-dns v0.1.12
@@ -57,6 +57,7 @@ require (
 )
 
 //replace github.com/sagernet/sing => ../sing
+replace github.com/sagernet/sing-quic => github.com/morgenanno/sing-quic v0.1.9-beta.3.0.20240319065235-c48be801c2e2
 
 require github.com/sagernet/wireguard-go v0.0.0-00010101000000-000000000000
 
@@ -96,11 +97,11 @@ require (
 	github.com/vishvananda/netns v0.0.0-20211101163701-50045581ed74 // indirect
 	github.com/zeebo/blake3 v0.2.3 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20240119083558-1b970713d09a // indirect
-	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81 // indirect
+	golang.org/x/mod v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.19.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240123012728-ef4313101c80 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
