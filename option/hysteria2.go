@@ -25,11 +25,13 @@ type Hysteria2User struct {
 type Hysteria2OutboundOptions struct {
 	DialerOptions
 	ServerOptions
-	UpMbps   int            `json:"up_mbps,omitempty"`
-	DownMbps int            `json:"down_mbps,omitempty"`
-	Obfs     *Hysteria2Obfs `json:"obfs,omitempty"`
-	Password string         `json:"password,omitempty"`
-	Network  NetworkList    `json:"network,omitempty"`
+	UpMbps      int            `json:"up_mbps,omitempty"`
+	DownMbps    int            `json:"down_mbps,omitempty"`
+	HopPorts    string         `json:"hop_ports,omitempty"`
+	HopInterval int            `json:"hop_interval,omitempty"`
+	Obfs        *Hysteria2Obfs `json:"obfs,omitempty"`
+	Password    string         `json:"password,omitempty"`
+	Network     NetworkList    `json:"network,omitempty"`
 	OutboundTLSOptionsContainer
 	BrutalDebug bool              `json:"brutal_debug,omitempty"`
 	TurnRelay   *TurnRelayOptions `json:"turn_relay,omitempty"`
